@@ -1,4 +1,4 @@
-import React, { type FormEvent } from 'react'
+import React from 'react'
 import styles from './SearchBar.module.css'
 import toast from 'react-hot-toast'
 
@@ -7,10 +7,7 @@ interface SearchBarProps {
 }
 
 const SearchBar: React.FC<SearchBarProps> = ({ onSubmit }) => {
-  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault()
-    const form = e.currentTarget
-    const formData = new FormData(form)
+  const handleFormAction = (formData: FormData) => {
     const query = (formData.get('query') as string)?.trim() ?? ''
 
     if (!query) {
@@ -19,7 +16,6 @@ const SearchBar: React.FC<SearchBarProps> = ({ onSubmit }) => {
     }
 
     onSubmit(query)
-    form.reset()
   }
 
   return (
@@ -33,7 +29,8 @@ const SearchBar: React.FC<SearchBarProps> = ({ onSubmit }) => {
         >
           Powered by TMDB
         </a>
-        <form className={styles.form} onSubmit={handleSubmit}>
+        
+        <form className={styles.form} action={handleFormAction}>
           <input
             className={styles.input}
             type="text"
@@ -52,3 +49,4 @@ const SearchBar: React.FC<SearchBarProps> = ({ onSubmit }) => {
 }
 
 export default SearchBar
+
